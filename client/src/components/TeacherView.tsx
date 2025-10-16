@@ -16,6 +16,7 @@ interface TeacherViewProps {
 interface StudentAnswer {
   id: number;
   studentName: string;
+  teacherName: string;
   gameMode: string;
   question: string;
   studentAnswer: string;
@@ -127,6 +128,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
     if (!acc[answer.studentName]) {
       acc[answer.studentName] = {
         name: answer.studentName,
+        teacherName: answer.teacherName,
         totalAnswers: 0,
         correctAnswers: 0,
         matchingAttempts: 0,
@@ -152,7 +154,12 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
     return acc;
   }, {});
 
-  const students = Object.values(studentStats);
+  const students = Object.values(studentStats).sort((a: any, b: any) => {
+    // Sort by teacher name (case-insensitive), then by student name
+    const teacherCompare = a.teacherName.toLowerCase().localeCompare(b.teacherName.toLowerCase());
+    if (teacherCompare !== 0) return teacherCompare;
+    return a.name.localeCompare(b.name);
+  });
   
   // Calculate class-wide statistics
   const classStats = {
@@ -297,6 +304,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Teacher</TableHead>
                 <TableHead>Student Name</TableHead>
                 <TableHead>Total Attempts</TableHead>
                 <TableHead>Correct Answers</TableHead>
@@ -311,6 +319,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
             <TableBody>
               {students.map((student: any) => (
                 <TableRow key={student.name}>
+                  <TableCell className="font-medium">{student.teacherName}</TableCell>
                   <TableCell className="font-medium">{student.name}</TableCell>
                   <TableCell>{student.totalAnswers}</TableCell>
                   <TableCell>{student.correctAnswers}</TableCell>
@@ -356,6 +365,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Teacher</TableHead>
                   <TableHead>Student</TableHead>
                   <TableHead>Game Mode</TableHead>
                   <TableHead>Question</TableHead>
@@ -367,11 +377,15 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
               </TableHeader>
               <TableBody>
                 {studentData
-                  .sort((a: StudentAnswer, b: StudentAnswer) => 
-                    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-                  )
+                  .sort((a: StudentAnswer, b: StudentAnswer) => {
+                    // Sort by teacher name (case-insensitive), then by timestamp
+                    const teacherCompare = a.teacherName.toLowerCase().localeCompare(b.teacherName.toLowerCase());
+                    if (teacherCompare !== 0) return teacherCompare;
+                    return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+                  })
                   .map((answer: StudentAnswer) => (
                     <TableRow key={answer.id}>
+                      <TableCell className="font-medium">{answer.teacherName}</TableCell>
                       <TableCell className="font-medium">{answer.studentName}</TableCell>
                       <TableCell>
                         <Badge variant="outline">
