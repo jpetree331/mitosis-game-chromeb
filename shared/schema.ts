@@ -11,6 +11,7 @@ export const users = pgTable("users", {
 export const studentAnswers = pgTable("student_answers", {
   id: serial("id").primaryKey(),
   studentName: text("student_name").notNull(),
+  teacherName: text("teacher_name").notNull(),
   gameMode: text("game_mode").notNull(), // "matching" or "ordering"
   question: text("question").notNull(),
   studentAnswer: text("student_answer").notNull(),
@@ -26,6 +27,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export const insertStudentAnswerSchema = createInsertSchema(studentAnswers).pick({
   studentName: true,
+  teacherName: true,
   gameMode: true,
   question: true,
   studentAnswer: true,
