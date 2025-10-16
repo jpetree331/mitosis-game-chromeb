@@ -128,6 +128,9 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
 
   const studentData: StudentAnswer[] = (answers as StudentAnswer[]) || [];
   
+  console.log("Raw studentData array:", studentData);
+  console.log("studentData length:", studentData.length);
+  
   // Group answers by student
   const studentStats = studentData.reduce((acc: any, answer: StudentAnswer) => {
     if (!acc[answer.studentName]) {
@@ -214,6 +217,9 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
           <p className="text-gray-600">
             Overview of student activity and performance in mitosis games
           </p>
+          <div className="mt-2 p-2 bg-yellow-100 border border-yellow-300 rounded text-sm">
+            <strong>DEBUG:</strong> Fetched {studentData.length} total answers | {students.length} unique students
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-4 gap-4 mb-6">
