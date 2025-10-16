@@ -12,12 +12,14 @@ interface StudentFormProps {
 
 export default function StudentForm({ onComplete }: StudentFormProps) {
   const [name, setName] = useState("");
-  const { setStudentName } = useStudent();
+  const [teacherName, setTeacherName] = useState("");
+  const { setStudentName, setTeacherName: setTeacherNameStore } = useStudent();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
+    if (name.trim() && teacherName.trim()) {
       setStudentName(name.trim());
+      setTeacherNameStore(teacherName.trim());
       onComplete();
     }
   };
@@ -33,7 +35,7 @@ export default function StudentForm({ onComplete }: StudentFormProps) {
             Welcome to Mitosis Game!
           </CardTitle>
           <p className="text-gray-600">
-            Please enter your name to get started
+            Please enter your name and teacher's last name to get started
           </p>
         </CardHeader>
         <CardContent>
@@ -53,10 +55,24 @@ export default function StudentForm({ onComplete }: StudentFormProps) {
                 autoFocus
               />
             </div>
+            <div>
+              <Label htmlFor="teacherName" className="text-gray-700">
+                Teacher Last Name
+              </Label>
+              <Input
+                id="teacherName"
+                type="text"
+                value={teacherName}
+                onChange={(e) => setTeacherName(e.target.value)}
+                placeholder="Enter teacher's last name"
+                className="mt-1"
+                required
+              />
+            </div>
             <Button 
               type="submit" 
               className="w-full bg-indigo-600 hover:bg-indigo-700"
-              disabled={!name.trim()}
+              disabled={!name.trim() || !teacherName.trim()}
             >
               Start Learning!
             </Button>
