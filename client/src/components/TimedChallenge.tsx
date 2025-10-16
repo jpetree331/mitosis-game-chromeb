@@ -15,7 +15,7 @@ interface TimedChallengeProps {
 }
 
 export default function TimedChallenge({ onBack }: TimedChallengeProps) {
-  const { studentName } = useStudent();
+  const { studentName, teacherName } = useStudent();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -94,6 +94,7 @@ export default function TimedChallenge({ onBack }: TimedChallengeProps) {
     // Submit answer to backend
     const answerData = {
       studentName,
+      teacherName,
       gameMode: "timed-challenge",
       question: currentQuestion.question,
       studentAnswer: selectedAnswer,

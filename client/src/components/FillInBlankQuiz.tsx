@@ -16,7 +16,7 @@ interface FillInBlankQuizProps {
 }
 
 export default function FillInBlankQuiz({ onBack }: FillInBlankQuizProps) {
-  const { studentName } = useStudent();
+  const { studentName, teacherName } = useStudent();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
@@ -56,6 +56,7 @@ export default function FillInBlankQuiz({ onBack }: FillInBlankQuizProps) {
     // Submit answer to backend
     const answerData = {
       studentName,
+      teacherName,
       gameMode: "fill-in-blank",
       question: currentQuestion.question,
       studentAnswer: answer.trim(),

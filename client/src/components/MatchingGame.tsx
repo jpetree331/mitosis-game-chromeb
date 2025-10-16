@@ -22,7 +22,7 @@ interface DropZone {
 }
 
 export default function MatchingGame({ onBack }: MatchingGameProps) {
-  const { studentName } = useStudent();
+  const { studentName, teacherName } = useStudent();
   const [dropZones, setDropZones] = useState<DropZone[]>(
     mitosisPhases.map(phase => ({
       phaseId: phase.id,
@@ -99,6 +99,7 @@ export default function MatchingGame({ onBack }: MatchingGameProps) {
       // Record the answer
       answers.push({
         studentName,
+        teacherName,
         gameMode: "matching",
         question: `Match phase: ${phase.name}`,
         studentAnswer: zone.droppedName || "No answer",

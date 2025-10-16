@@ -15,7 +15,7 @@ interface MultipleChoiceQuizProps {
 }
 
 export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) {
-  const { studentName } = useStudent();
+  const { studentName, teacherName } = useStudent();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -50,6 +50,7 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
     // Submit answer to backend
     const answerData = {
       studentName,
+      teacherName,
       gameMode: "multiple-choice",
       question: currentQuestion.question,
       studentAnswer: selectedAnswer,

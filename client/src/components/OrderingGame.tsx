@@ -16,7 +16,7 @@ interface OrderingGameProps {
 }
 
 export default function OrderingGame({ onBack }: OrderingGameProps) {
-  const { studentName } = useStudent();
+  const { studentName, teacherName } = useStudent();
   
   // Shuffle the phases initially
   const [orderedPhases, setOrderedPhases] = useState(() => 
@@ -77,6 +77,7 @@ export default function OrderingGame({ onBack }: OrderingGameProps) {
     // Submit answer to backend
     const answerData = {
       studentName,
+      teacherName,
       gameMode: "ordering",
       question: "Order the phases of mitosis",
       studentAnswer: orderedPhases.map(p => p.name).join(" → "),
