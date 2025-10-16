@@ -1,0 +1,91 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BookOpen, ArrowUpDown, GraduationCap } from "lucide-react";
+
+interface GameModesProps {
+  onSelectMode: (mode: "matching" | "ordering" | "teacher") => void;
+}
+
+export default function GameModes({ onSelectMode }: GameModesProps) {
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-6">
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader className="text-center">
+            <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Matching Game
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Match the correct phase names to the mitosis images. Learn to identify each stage of cell division!
+            </p>
+            <Button 
+              onClick={() => onSelectMode("matching")}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+            >
+              Start Matching
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader className="text-center">
+            <ArrowUpDown className="w-12 h-12 text-green-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Ordering Game
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Arrange the phases of mitosis in the correct chronological order. Understand the sequence of cell division!
+            </p>
+            <Button 
+              onClick={() => onSelectMode("ordering")}
+              className="w-full bg-green-600 hover:bg-green-700"
+            >
+              Start Ordering
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader className="text-center">
+            <GraduationCap className="w-12 h-12 text-purple-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Teacher View
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Review student progress and performance data. Password required for access.
+            </p>
+            <Button 
+              onClick={() => onSelectMode("teacher")}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+            >
+              Teacher Login
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-8 text-center">
+        <Card className="max-w-2xl mx-auto bg-indigo-50 border-indigo-200">
+          <CardHeader>
+            <CardTitle className="text-indigo-900">About Mitosis</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-indigo-800">
+              Mitosis is the process by which a single cell divides to produce two identical daughter cells. 
+              It consists of four main phases: <strong>Prophase</strong>, <strong>Metaphase</strong>, 
+              <strong>Anaphase</strong>, and <strong>Telophase</strong>. Each phase has distinct characteristics 
+              involving chromosomes and spindle fibers.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
