@@ -120,7 +120,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
     );
   }
 
-  const studentData = answers || [];
+  const studentData: StudentAnswer[] = answers || [];
   
   // Group answers by student
   const studentStats = studentData.reduce((acc: any, answer: StudentAnswer) => {

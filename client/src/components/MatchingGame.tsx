@@ -79,7 +79,10 @@ export default function MatchingGame({ onBack }: MatchingGameProps) {
         : zone
     ));
 
-    setUsedNames(prev => [...new Set([...prev, draggedName])]);
+    setUsedNames(prev => {
+      const newSet = new Set([...prev, draggedName]);
+      return Array.from(newSet);
+    });
     setDraggedName(null);
   }, [draggedName]);
 
