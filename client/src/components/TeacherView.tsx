@@ -131,6 +131,8 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
         correctAnswers: 0,
         matchingAttempts: 0,
         orderingAttempts: 0,
+        multipleChoiceAttempts: 0,
+        fillInBlankAttempts: 0,
         lastActivity: answer.timestamp
       };
     }
@@ -139,6 +141,8 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
     if (answer.isCorrect) acc[answer.studentName].correctAnswers++;
     if (answer.gameMode === "matching") acc[answer.studentName].matchingAttempts++;
     if (answer.gameMode === "ordering") acc[answer.studentName].orderingAttempts++;
+    if (answer.gameMode === "multiple-choice") acc[answer.studentName].multipleChoiceAttempts++;
+    if (answer.gameMode === "fill-in-blank") acc[answer.studentName].fillInBlankAttempts++;
     
     // Update last activity if this is more recent
     if (new Date(answer.timestamp) > new Date(acc[answer.studentName].lastActivity)) {
@@ -149,6 +153,28 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
   }, {});
 
   const students = Object.values(studentStats);
+  
+  // Calculate class-wide statistics
+  const classStats = {
+    averageScore: students.length > 0 
+      ? Math.round(students.reduce((sum: number, s: any) => 
+          sum + (s.totalAnswers > 0 ? (s.correctAnswers / s.totalAnswers) * 100 : 0), 0) / students.length)
+      : 0,
+    totalAttempts: studentData.length,
+    topPerformer: students.length > 0
+      ? students.reduce((top: any, curr: any) => {
+          const currRate = curr.totalAnswers > 0 ? curr.correctAnswers / curr.totalAnswers : 0;
+          const topRate = top.totalAnswers > 0 ? top.correctAnswers / top.totalAnswers : 0;
+          return currRate > topRate ? curr : top;
+        }, students[0])
+      : null,
+    gameModeStats: {
+      matching: studentData.filter((a: StudentAnswer) => a.gameMode === "matching").length,
+      ordering: studentData.filter((a: StudentAnswer) => a.gameMode === "ordering").length,
+      multipleChoice: studentData.filter((a: StudentAnswer) => a.gameMode === "multiple-choice").length,
+      fillInBlank: studentData.filter((a: StudentAnswer) => a.gameMode === "fill-in-blank").length
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -177,7 +203,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
           </p>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="grid md:grid-cols-4 gap-4 mb-6">
             <div className="bg-blue-50 p-4 rounded-lg">
               <div className="flex items-center gap-2">
                 <User className="w-5 h-5 text-blue-600" />
@@ -205,6 +231,54 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
                 {studentData.length}
               </div>
             </div>
+            <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Target className="w-5 h-5 text-purple-600" />
+                <span className="text-sm text-purple-800">Class Average</span>
+              </div>
+              <div className="text-2xl font-bold text-purple-900">
+                {classStats.averageScore}%
+              </div>
+            </div>
+          </div>
+
+          {/* Class-wide insights */}
+          <div className="grid md:grid-cols-2 gap-4 mt-4">
+            <div className="bg-indigo-50 p-4 rounded-lg">
+              <h4 className="text-sm font-semibold text-indigo-900 mb-2">Top Performer</h4>
+              {classStats.topPerformer ? (
+                <div>
+                  <p className="text-lg font-bold text-indigo-800">{classStats.topPerformer.name}</p>
+                  <p className="text-sm text-indigo-600">
+                    {Math.round((classStats.topPerformer.correctAnswers / classStats.topPerformer.totalAnswers) * 100)}% accuracy
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sm text-indigo-600">No data yet</p>
+              )}
+            </div>
+            
+            <div className="bg-teal-50 p-4 rounded-lg">
+              <h4 className="text-sm font-semibold text-teal-900 mb-2">Game Mode Usage</h4>
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-teal-700">Matching:</span>
+                  <span className="font-semibold text-teal-900">{classStats.gameModeStats.matching}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-teal-700">Ordering:</span>
+                  <span className="font-semibold text-teal-900">{classStats.gameModeStats.ordering}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-teal-700">Multiple Choice:</span>
+                  <span className="font-semibold text-teal-900">{classStats.gameModeStats.multipleChoice}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-teal-700">Fill in Blank:</span>
+                  <span className="font-semibold text-teal-900">{classStats.gameModeStats.fillInBlank}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -222,8 +296,10 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
                 <TableHead>Total Attempts</TableHead>
                 <TableHead>Correct Answers</TableHead>
                 <TableHead>Success Rate</TableHead>
-                <TableHead>Matching Games</TableHead>
-                <TableHead>Ordering Games</TableHead>
+                <TableHead className="text-xs">Match</TableHead>
+                <TableHead className="text-xs">Order</TableHead>
+                <TableHead className="text-xs">MC</TableHead>
+                <TableHead className="text-xs">FIB</TableHead>
                 <TableHead>Last Activity</TableHead>
               </TableRow>
             </TableHeader>
@@ -249,7 +325,9 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
                   </TableCell>
                   <TableCell>{student.matchingAttempts}</TableCell>
                   <TableCell>{student.orderingAttempts}</TableCell>
-                  <TableCell>
+                  <TableCell>{student.multipleChoiceAttempts}</TableCell>
+                  <TableCell>{student.fillInBlankAttempts}</TableCell>
+                  <TableCell className="text-sm">
                     {new Date(student.lastActivity).toLocaleDateString()} {" "}
                     {new Date(student.lastActivity).toLocaleTimeString()}
                   </TableCell>
