@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,11 +25,24 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
 
   const submitAnswerMutation = useMutation({
     mutationFn: async (answerData: any) => {
-      await apiRequest("POST", "/api/student-answers", answerData);
+      const response = await apiRequest("POST", "/api/student-answers", answerData);
+      return response.json();
+    },
+    onError: (error) => {
+      console.error("Failed to submit answer:", error);
+      toast.error("Failed to save answer");
+    },
+    onSuccess: () => {
+      console.log("Answer submitted successfully");
     }
   });
 
   const currentQuestion = multipleChoiceQuestions[currentQuestionIndex];
+  
+  // Shuffle options for each question (memoized per question index)
+  const shuffledOptions = useMemo(() => {
+    return [...currentQuestion.options].sort(() => Math.random() - 0.5);
+  }, [currentQuestionIndex]);
 
   const handleAnswerSelect = (answer: string) => {
     if (isAnswered) return;
@@ -187,7 +200,7 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
             </h3>
             
             <div className="space-y-3">
-              {currentQuestion.options.map((option) => {
+              {shuffledOptions.map((option) => {
                 const isSelected = selectedAnswer === option;
                 const isCorrect = option === currentQuestion.correctAnswer;
                 const showCorrect = isAnswered && isCorrect;

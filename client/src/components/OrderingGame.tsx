@@ -29,7 +29,15 @@ export default function OrderingGame({ onBack }: OrderingGameProps) {
 
   const submitAnswerMutation = useMutation({
     mutationFn: async (answerData: any) => {
-      await apiRequest("POST", "/api/student-answers", answerData);
+      const response = await apiRequest("POST", "/api/student-answers", answerData);
+      return response.json();
+    },
+    onError: (error) => {
+      console.error("Failed to submit answer:", error);
+      toast.error("Failed to save answer");
+    },
+    onSuccess: () => {
+      console.log("Answer submitted successfully");
     }
   });
 
