@@ -121,7 +121,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
     );
   }
 
-  const studentData: StudentAnswer[] = answers || [];
+  const studentData: StudentAnswer[] = (answers as StudentAnswer[]) || [];
   
   // Group answers by student
   const studentStats = studentData.reduce((acc: any, answer: StudentAnswer) => {
@@ -169,7 +169,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
       : 0,
     totalAttempts: studentData.length,
     topPerformer: students.length > 0
-      ? students.reduce((top: any, curr: any) => {
+      ? (students as any[]).reduce((top: any, curr: any) => {
           const currRate = curr.totalAnswers > 0 ? curr.correctAnswers / curr.totalAnswers : 0;
           const topRate = top.totalAnswers > 0 ? top.correctAnswers / top.totalAnswers : 0;
           return currRate > topRate ? curr : top;

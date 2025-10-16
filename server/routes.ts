@@ -20,6 +20,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const {
         studentName,
+        teacherName,
         gameMode,
         question,
         studentAnswer,
@@ -29,14 +30,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } = req.body;
 
       // Validate required fields
-      if (!studentName || !gameMode || !question || !studentAnswer || !correctAnswer || typeof isCorrect !== "boolean") {
+      if (!studentName || !teacherName || !gameMode || !question || !studentAnswer || !correctAnswer || typeof isCorrect !== "boolean") {
         return res.status(400).json({ 
-          message: "Missing required fields: studentName, gameMode, question, studentAnswer, correctAnswer, isCorrect" 
+          message: "Missing required fields: studentName, teacherName, gameMode, question, studentAnswer, correctAnswer, isCorrect" 
         });
       }
 
       const answer = await storage.createAnswer({
         studentName,
+        teacherName,
         gameMode,
         question,
         studentAnswer,
