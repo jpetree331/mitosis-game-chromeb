@@ -1,15 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, ArrowUpDown, GraduationCap } from "lucide-react";
+import { BookOpen, ArrowUpDown, GraduationCap, ListChecks, TextCursor } from "lucide-react";
 
 interface GameModesProps {
-  onSelectMode: (mode: "matching" | "ordering" | "teacher") => void;
+  onSelectMode: (mode: "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "teacher") => void;
 }
 
 export default function GameModes({ onSelectMode }: GameModesProps) {
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="grid md:grid-cols-3 gap-6">
+    <div className="max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer">
           <CardHeader className="text-center">
             <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-2" />
@@ -46,6 +46,46 @@ export default function GameModes({ onSelectMode }: GameModesProps) {
               className="w-full bg-green-600 hover:bg-green-700"
             >
               Start Ordering
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader className="text-center">
+            <ListChecks className="w-12 h-12 text-orange-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Multiple Choice
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Answer questions about mitosis phases and processes. Test your knowledge with detailed explanations!
+            </p>
+            <Button 
+              onClick={() => onSelectMode("multiple-choice")}
+              className="w-full bg-orange-600 hover:bg-orange-700"
+            >
+              Start Quiz
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <CardHeader className="text-center">
+            <TextCursor className="w-12 h-12 text-pink-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Fill in the Blank
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Complete statements about mitosis by typing the correct terms. Get hints when you need them!
+            </p>
+            <Button 
+              onClick={() => onSelectMode("fill-in-blank")}
+              className="w-full bg-pink-600 hover:bg-pink-700"
+            >
+              Start Quiz
             </Button>
           </CardContent>
         </Card>

@@ -4,6 +4,8 @@ import { Toaster } from "sonner";
 import GameModes from "./components/GameModes";
 import MatchingGame from "./components/MatchingGame";
 import OrderingGame from "./components/OrderingGame";
+import MultipleChoiceQuiz from "./components/MultipleChoiceQuiz";
+import FillInBlankQuiz from "./components/FillInBlankQuiz";
 import StudentForm from "./components/StudentForm";
 import TeacherView from "./components/TeacherView";
 import { useStudent } from "./lib/stores/useStudent";
@@ -11,7 +13,7 @@ import "@fontsource/inter";
 
 const queryClient = new QueryClient();
 
-type GameMode = "menu" | "matching" | "ordering" | "teacher";
+type GameMode = "menu" | "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "teacher";
 
 function App() {
   const [gameMode, setGameMode] = useState<GameMode>("menu");
@@ -54,6 +56,14 @@ function App() {
 
           {gameMode === "ordering" && (
             <OrderingGame onBack={() => setGameMode("menu")} />
+          )}
+
+          {gameMode === "multiple-choice" && (
+            <MultipleChoiceQuiz onBack={() => setGameMode("menu")} />
+          )}
+
+          {gameMode === "fill-in-blank" && (
+            <FillInBlankQuiz onBack={() => setGameMode("menu")} />
           )}
 
           {gameMode === "teacher" && (
