@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CheckCircle, XCircle, RotateCcw, GripVertical } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ArrowLeft, CheckCircle, XCircle, RotateCcw, GripVertical, Info } from "lucide-react";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import MitosisPhaseCanvas from "./MitosisPhaseCanvas";
@@ -234,22 +235,47 @@ export default function OrderingGame({ onBack }: OrderingGameProps) {
         </Button>
       </div>
 
-      {/* Correct Order Reference (shown after completion) */}
+      {/* Correct Order Reference and Explanations (shown after completion) */}
       {isCompleted && (
-        <Card className="mt-6 bg-gray-50">
-          <CardHeader>
-            <CardTitle className="text-lg text-gray-800">Correct Order:</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap justify-center gap-2">
-              {["Prophase", "Metaphase", "Anaphase", "Telophase"].map((name, index) => (
-                <Badge key={name} variant="secondary" className="text-sm">
-                  {index + 1}. {name}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <>
+          <Card className="mt-6 bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-lg text-gray-800">Correct Order:</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap justify-center gap-2">
+                {["Prophase", "Metaphase", "Anaphase", "Telophase"].map((name, index) => (
+                  <Badge key={name} variant="secondary" className="text-sm">
+                    {index + 1}. {name}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Detailed explanation of the sequence */}
+          <Card className="mt-6 bg-blue-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="text-lg text-blue-900 flex items-center gap-2">
+                <Info className="w-5 h-5" />
+                Understanding the Mitosis Sequence
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Alert className="bg-white border-blue-300">
+                <AlertDescription className="text-gray-800">
+                  <strong className="text-blue-900">Why this order?</strong> Mitosis follows a logical progression where each phase prepares for the next:
+                  <ol className="list-decimal list-inside mt-2 space-y-1">
+                    <li><strong>Prophase</strong> - Chromosomes condense and become visible, nuclear envelope breaks down</li>
+                    <li><strong>Metaphase</strong> - Chromosomes line up at the cell's center, ready to be separated</li>
+                    <li><strong>Anaphase</strong> - Sister chromatids are pulled apart to opposite poles</li>
+                    <li><strong>Telophase</strong> - Nuclear envelopes reform and the cell divides</li>
+                  </ol>
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+          </Card>
+        </>
       )}
     </div>
   );

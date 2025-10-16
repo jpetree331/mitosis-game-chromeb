@@ -2,7 +2,8 @@ import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CheckCircle, XCircle, RotateCcw } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ArrowLeft, CheckCircle, XCircle, RotateCcw, Info } from "lucide-react";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import MitosisPhaseCanvas from "./MitosisPhaseCanvas";
@@ -251,6 +252,40 @@ export default function MatchingGame({ onBack }: MatchingGameProps) {
           </div>
         </CardContent>
       </Card>
+
+      {/* Explanations for incorrect answers */}
+      {isCompleted && dropZones.some(z => z.isCorrect === false) && (
+        <Card className="mt-6 bg-blue-50 border-blue-200">
+          <CardHeader>
+            <CardTitle className="text-lg text-blue-900 flex items-center gap-2">
+              <Info className="w-5 h-5" />
+              Review & Learn
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {dropZones
+              .filter(z => z.isCorrect === false)
+              .map(zone => {
+                const phase = mitosisPhases.find(p => p.id === zone.phaseId)!;
+                return (
+                  <Alert key={zone.phaseId} className="bg-white border-blue-300">
+                    <AlertDescription className="text-gray-800">
+                      <strong className="text-blue-900">{phase.name}:</strong> {phase.description}
+                      <div className="mt-2 text-sm text-gray-600">
+                        <strong>Key characteristics:</strong>
+                        <ul className="list-disc list-inside mt-1">
+                          {phase.characteristics.map((char, idx) => (
+                            <li key={idx}>{char}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                );
+              })}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Check Answers Button */}
       <div className="text-center mt-6">
