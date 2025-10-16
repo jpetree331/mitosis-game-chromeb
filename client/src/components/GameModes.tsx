@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, ArrowUpDown, GraduationCap, ListChecks, TextCursor, Trophy } from "lucide-react";
+import { BookOpen, ArrowUpDown, GraduationCap, ListChecks, TextCursor, Trophy, UserX } from "lucide-react";
+import { useStudent } from "@/lib/stores/useStudent";
 
 interface GameModesProps {
   onSelectMode: (mode: "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "timed-challenge" | "teacher") => void;
 }
 
 export default function GameModes({ onSelectMode }: GameModesProps) {
+  const { studentName, teacherName, clearStudent } = useStudent();
+  
   return (
     <div className="max-w-6xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
@@ -145,6 +148,17 @@ export default function GameModes({ onSelectMode }: GameModesProps) {
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="mt-6 text-center">
+        <Button 
+          onClick={clearStudent}
+          variant="outline"
+          className="border-gray-300 text-gray-700 hover:bg-gray-100"
+        >
+          <UserX className="w-4 h-4 mr-2" />
+          Change Student (Currently: {studentName} - Teacher: {teacherName})
+        </Button>
       </div>
     </div>
   );
