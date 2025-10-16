@@ -178,7 +178,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
         <Button 
           onClick={onBack} 
@@ -293,7 +293,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
         <CardHeader>
           <CardTitle className="text-lg">Student Summary</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -352,7 +352,7 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-96 overflow-y-auto overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>

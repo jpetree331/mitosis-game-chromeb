@@ -143,7 +143,7 @@ export default function MatchingGame({ onBack }: MatchingGameProps) {
   const canCheck = dropZones.every(zone => zone.droppedName !== null);
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
         <Button 
           onClick={onBack} 

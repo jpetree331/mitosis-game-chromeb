@@ -8,8 +8,8 @@ interface GameModesProps {
 
 export default function GameModes({ onSelectMode }: GameModesProps) {
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="max-w-6xl mx-auto overflow-y-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer">
           <CardHeader className="text-center">
             <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-2" />

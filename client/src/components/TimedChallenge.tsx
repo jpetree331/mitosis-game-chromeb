@@ -149,7 +149,7 @@ export default function TimedChallenge({ onBack }: TimedChallengeProps) {
     const rankInfo = getRank(score);
 
     return (
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <Button 
             onClick={onBack} 
@@ -226,7 +226,7 @@ export default function TimedChallenge({ onBack }: TimedChallengeProps) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
         <Button 
           onClick={onBack} 

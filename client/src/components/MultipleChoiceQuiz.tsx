@@ -97,7 +97,7 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
 
   if (isQuizComplete) {
     return (
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <Button 
             onClick={onBack} 
@@ -149,7 +149,7 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto overflow-y-auto">
       <div className="flex items-center justify-between mb-6">
         <Button 
           onClick={onBack} 
