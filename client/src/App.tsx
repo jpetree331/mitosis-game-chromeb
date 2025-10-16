@@ -6,6 +6,7 @@ import MatchingGame from "./components/MatchingGame";
 import OrderingGame from "./components/OrderingGame";
 import MultipleChoiceQuiz from "./components/MultipleChoiceQuiz";
 import FillInBlankQuiz from "./components/FillInBlankQuiz";
+import TimedChallenge from "./components/TimedChallenge";
 import StudentForm from "./components/StudentForm";
 import TeacherView from "./components/TeacherView";
 import { useStudent } from "./lib/stores/useStudent";
@@ -13,7 +14,7 @@ import "@fontsource/inter";
 
 const queryClient = new QueryClient();
 
-type GameMode = "menu" | "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "teacher";
+type GameMode = "menu" | "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "timed-challenge" | "teacher";
 
 function App() {
   const [gameMode, setGameMode] = useState<GameMode>("menu");
@@ -64,6 +65,10 @@ function App() {
 
           {gameMode === "fill-in-blank" && (
             <FillInBlankQuiz onBack={() => setGameMode("menu")} />
+          )}
+
+          {gameMode === "timed-challenge" && (
+            <TimedChallenge onBack={() => setGameMode("menu")} />
           )}
 
           {gameMode === "teacher" && (

@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, ArrowUpDown, GraduationCap, ListChecks, TextCursor } from "lucide-react";
+import { BookOpen, ArrowUpDown, GraduationCap, ListChecks, TextCursor, Trophy } from "lucide-react";
 
 interface GameModesProps {
-  onSelectMode: (mode: "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "teacher") => void;
+  onSelectMode: (mode: "matching" | "ordering" | "multiple-choice" | "fill-in-blank" | "timed-challenge" | "teacher") => void;
 }
 
 export default function GameModes({ onSelectMode }: GameModesProps) {
@@ -86,6 +86,26 @@ export default function GameModes({ onSelectMode }: GameModesProps) {
               className="w-full bg-pink-600 hover:bg-pink-700"
             >
               Start Quiz
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50">
+          <CardHeader className="text-center">
+            <Trophy className="w-12 h-12 text-yellow-600 mx-auto mb-2" />
+            <CardTitle className="text-xl text-gray-800">
+              Timed Challenge
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 mb-4">
+              Race against the clock! Answer questions quickly for bonus points and compete for the highest score!
+            </p>
+            <Button 
+              onClick={() => onSelectMode("timed-challenge")}
+              className="w-full bg-yellow-600 hover:bg-yellow-700"
+            >
+              Start Challenge
             </Button>
           </CardContent>
         </Card>

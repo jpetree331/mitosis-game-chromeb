@@ -172,7 +172,8 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
       matching: studentData.filter((a: StudentAnswer) => a.gameMode === "matching").length,
       ordering: studentData.filter((a: StudentAnswer) => a.gameMode === "ordering").length,
       multipleChoice: studentData.filter((a: StudentAnswer) => a.gameMode === "multiple-choice").length,
-      fillInBlank: studentData.filter((a: StudentAnswer) => a.gameMode === "fill-in-blank").length
+      fillInBlank: studentData.filter((a: StudentAnswer) => a.gameMode === "fill-in-blank").length,
+      timedChallenge: studentData.filter((a: StudentAnswer) => a.gameMode === "timed-challenge").length
     }
   };
 
@@ -276,6 +277,10 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
                 <div className="flex justify-between">
                   <span className="text-teal-700">Fill in Blank:</span>
                   <span className="font-semibold text-teal-900">{classStats.gameModeStats.fillInBlank}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-teal-700">Timed Challenge:</span>
+                  <span className="font-semibold text-teal-900">{classStats.gameModeStats.timedChallenge}</span>
                 </div>
               </div>
             </div>
