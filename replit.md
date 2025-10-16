@@ -78,7 +78,7 @@ Preferred communication style: Simple, everyday language.
 
 **Teacher Access**
 - Password-protected teacher view for monitoring student progress
-- Client-side password validation (currently hardcoded as "teacher123" - should be moved server-side for production)
+- Client-side password validation (currently hardcoded as "DariusPetree" - should be moved server-side for production)
 - Query-based authorization using TanStack Query's `on401` handling
 
 **Student Identification**

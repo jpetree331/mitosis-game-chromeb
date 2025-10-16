@@ -38,10 +38,10 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simple password check - in production, this should be server-side
-    if (password === "teacher123") {
+    if (password === "DariusPetree") {
       setIsAuthenticated(true);
     } else {
-      alert("Incorrect password. Hint: teacher123");
+      alert("Incorrect password");
     }
   };
 
