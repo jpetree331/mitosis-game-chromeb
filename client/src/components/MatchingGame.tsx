@@ -124,7 +124,9 @@ export default function MatchingGame({ onBack }: MatchingGameProps) {
     setIsCompleted(true);
 
     // Submit all answers to backend
+    console.log("Submitting", answers.length, "answers to backend");
     answers.forEach(answer => {
+      console.log("Submitting answer:", answer);
       submitAnswerMutation.mutate(answer);
     });
 

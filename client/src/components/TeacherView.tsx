@@ -30,11 +30,16 @@ export default function TeacherView({ onBack }: TeacherViewProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { data: answers, isLoading } = useQuery({
+  const { data: answers, isLoading, error } = useQuery({
     queryKey: ["/api/student-answers"],
     queryFn: getQueryFn({ on401: "returnNull" }),
     enabled: isAuthenticated,
   });
+
+  console.log("TeacherView - isAuthenticated:", isAuthenticated);
+  console.log("TeacherView - isLoading:", isLoading);
+  console.log("TeacherView - answers:", answers);
+  console.log("TeacherView - error:", error);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
