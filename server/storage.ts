@@ -1,3 +1,5 @@
+import { eq, desc } from "drizzle-orm";
+import { db } from "./db";
 import { users, type User, type InsertUser, studentAnswers, type StudentAnswer, type InsertStudentAnswer } from "@shared/schema";
 
 export interface IStorage {
@@ -12,65 +14,55 @@ export interface IStorage {
   getAnswerById(id: number): Promise<StudentAnswer | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private answers: Map<number, StudentAnswer>;
-  private currentUserId: number;
-  private currentAnswerId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.answers = new Map();
-    this.currentUserId = 1;
-    this.currentAnswerId = 1;
-  }
-
-  // User methods (existing)
+export class DatabaseStorage implements IStorage {
+  // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
   // Student answer methods
   async createAnswer(insertAnswer: InsertStudentAnswer): Promise<StudentAnswer> {
-    const id = this.currentAnswerId++;
-    const answer: StudentAnswer = { 
-      id, 
+    const answerData = {
       ...insertAnswer,
       timestamp: insertAnswer.timestamp || new Date().toISOString()
     };
-    this.answers.set(id, answer);
+    
+    const [answer] = await db.insert(studentAnswers).values(answerData).returning();
     console.log(`Saved answer for ${answer.studentName}: ${answer.isCorrect ? 'Correct' : 'Incorrect'}`);
     return answer;
   }
 
   async getAllAnswers(): Promise<StudentAnswer[]> {
-    return Array.from(this.answers.values()).sort((a, b) => 
-      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-    );
+    return await db.select()
+      .from(studentAnswers)
+      .orderBy(desc(studentAnswers.timestamp));
   }
 
   async getAnswersByStudent(studentName: string): Promise<StudentAnswer[]> {
-    return Array.from(this.answers.values())
-      .filter(answer => answer.studentName === studentName)
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    return await db.select()
+      .from(studentAnswers)
+      .where(eq(studentAnswers.studentName, studentName))
+      .orderBy(desc(studentAnswers.timestamp));
   }
 
   async getAnswerById(id: number): Promise<StudentAnswer | undefined> {
-    return this.answers.get(id);
+    const [answer] = await db.select()
+      .from(studentAnswers)
+      .where(eq(studentAnswers.id, id))
+      .limit(1);
+    return answer;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
