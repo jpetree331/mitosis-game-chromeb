@@ -6,6 +6,47 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Security headers for school Chromebook compatibility
+app.use((req, res, next) => {
+  // Allow iframes from same origin (for embedding if needed)
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  
+  // Prevent MIME type sniffing
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  
+  // Enable XSS protection
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  
+  // Referrer policy
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  
+  // Permissions policy (restrict potentially problematic features)
+  res.setHeader(
+    "Permissions-Policy",
+    "geolocation=(), microphone=(), camera=(), payment=()"
+  );
+  
+  // Content Security Policy - permissive for same-origin, strict for external
+  // This helps with school filters while maintaining security
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // 'unsafe-eval' needed for Vite in dev
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self' https:",
+    "media-src 'self' blob: data:",
+    "worker-src 'self' blob:",
+    "frame-ancestors 'self'",
+  ].join("; ");
+  res.setHeader("Content-Security-Policy", csp);
+  
+  // Educational content indicator
+  res.setHeader("X-Educational-Content", "yes");
+  
+  next();
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

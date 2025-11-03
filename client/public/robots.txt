@@ -1,0 +1,9 @@
+# robots.txt for Mitosis Match Educational Game
+# This file helps search engines and filters understand this is educational content
+
+User-agent: *
+Allow: /
+
+# Indicate this is educational content
+# Educational: yes
+

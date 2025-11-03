@@ -1,0 +1,23 @@
+{
+  "name": "Mitosis Match - Educational Biology Game",
+  "short_name": "Mitosis Match",
+  "description": "Interactive educational game for learning about mitosis and cell division",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "games", "science"],
+  "lang": "en-US",
+  "scope": "/",
+  "prefer_related_applications": false
+}
+

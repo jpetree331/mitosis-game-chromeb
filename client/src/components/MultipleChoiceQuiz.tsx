@@ -29,8 +29,8 @@ export default function MultipleChoiceQuiz({ onBack }: MultipleChoiceQuizProps) 
       return response.json();
     },
     onError: (error) => {
-      console.error("Failed to submit answer:", error);
-      toast.error("Failed to save answer");
+      // Silently handle errors - backend may not be available (frontend-only mode)
+      console.log("Answer not saved (backend unavailable or error):", error);
     },
     onSuccess: () => {
       console.log("Answer submitted successfully");

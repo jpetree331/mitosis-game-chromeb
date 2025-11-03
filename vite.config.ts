@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path, { dirname } from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { fileURLToPath } from "url";
-import glsl from "vite-plugin-glsl";
+// Removed GLSL plugin - not needed for 2D canvas rendering
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [
     react(),
     runtimeErrorOverlay(),
-    glsl(), // Add GLSL shader support
+    // Removed glsl() plugin - not used in this project
   ],
   resolve: {
     alias: {
@@ -25,6 +25,6 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
-  // Add support for large models and audio files
-  assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.mp3", "**/*.ogg", "**/*.wav"],
+  // Add support for audio files (3D models removed - not used)
+  assetsInclude: ["**/*.mp3", "**/*.ogg", "**/*.wav"],
 });
